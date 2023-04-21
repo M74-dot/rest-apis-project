@@ -30,6 +30,10 @@ def create_app(db_url=None):
         = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.init_app(app)
+
+    with app.app_context():
+        db.create_all()
+
     migrate = Migrate(app, db)
     api = Api(app)
 
